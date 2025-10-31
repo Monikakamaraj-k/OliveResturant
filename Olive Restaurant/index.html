@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OLIVE — Fresh Mediterranean Cuisine</title>
+  <meta name="description" content="OLIVE restaurant — Fresh Mediterranean cuisine. Book a table, view our menu and gallery." />
+
+  <!-- ============================
+       Styles: single-file, fully self-contained
+       ============================ -->
+  <style>
+    /* ---------- Root colors & utilities ---------- */
+    *{
+        width: 100%;
+    }
+    :root{
+      --bg: #fffdf7;
+      --panel: #f7f9f3;
+      --accent: #a4c639;    /* olive green */
+      --accent-2: #607b3b;  /* deeper olive */
+      --gold: #f4c10f;
+      --muted: #8b8b7a;
+      --text: #2e4e1f;
+      --glass: rgba(255,255,255,0.66);
+      --shadow: 0 10px 30px rgba(20,30,20,0.06);
+      --radius: 14px;
+      --maxwidth: 1200px;
+      --mono: "Courier New", Courier, monospace;
+    }
+    h1{
+        margin-left: 500px;
+    }
+    .hero {
+  background-color: #607b3b; /* Olive color fallback */
+  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=60');
+  background-size:100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh;
+}
+ strong{
+    color: white
+ }
+
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body,h1,h2,h3,h4,h5,h6,p,figure,blockquote,dl,dd{margin:0;padding:0}
+    html,body{height:100%;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%;height:auto}
+    ul{list-style:none}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit}
+
+    /* Container */
+    .container{width:92%;max-width:var(--maxwidth);margin:0 auto}
+
+    /* ---------- Header / nav ---------- */
+    header.site-header{
+      position:sticky;top:0;z-index:220;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.86));
+      border-bottom:1px solid rgba(0,0,0,0.04);
+      backdrop-filter: blur(6px);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-2),var(--accent));
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-family:var(--mono);font-size:20px;box-shadow:0 8px 28px rgba(96,123,59,0.12)
+    }
+    .brand .title{display:flex;flex-direction:column}
+    .brand .name{font-weight:800;color:var(--accent-2);letter-spacing:1px}
+    .brand .tag{font-size:12px;color:var(--muted)}
+
+    nav.primary{display:flex;gap:18px;align-items:center}
+    nav.primary a{padding:8px 12px;border-radius:10px;font-weight:600;transition:all .18s ease}
+    nav.primary a:hover, nav.primary a:focus{background:linear-gradient(90deg, rgba(164,198,57,0.08), rgba(96,123,59,0.06));color:var(--accent-2);transform:translateY(-2px)}
+    .cta{background:var(--accent);color:white;padding:9px 14px;border-radius:10px;font-weight:800;box-shadow:0 10px 26px rgba(164,198,57,0.12)}
+
+    .mobile-toggle{display:none; background:transparent;border:none;font-weight:700}
+    @media (max-width:860px){nav.primary{display:none}.mobile-toggle{display:inline-flex;gap:8px;align-items:center}}
+
+    /* ---------- Preloader (fix blank home) ---------- */
+    #preloader{
+      position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+      background:var(--bg);
+      transition:opacity .45s ease, visibility .45s ease;
+    }
+    #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    #preloader .loader{
+      display:flex;flex-direction:column;align-items:center;gap:12px;
+      color:var(--accent-2);font-weight:800;
+    }
+    #preloader .spinner{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      display:inline-block;animation:spin 1.6s linear infinite;box-shadow:0 12px 30px rgba(96,123,59,0.1)
+    }
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    /* ---------- HERO ---------- */
+    .hero{
+      min-height:82vh;display:grid;grid-template-columns:1fr 460px;gap:28px;align-items:center;padding:56px 0;
+    }
+
+    /* hero fallback color & optimized background image (smaller size) */
+    .hero .left{
+      color:#fff;padding-right:8px;
+    }
+    .hero .left h1{
+      font-size:48px;line-height:1;color:#fff;margin-bottom:8px;text-shadow:2px 8px 26px rgba(0,0,0,0.45);font-weight:900; margin-left: 20px;
+    }
+    .hero .left p.lead{font-size:18px;color:#fff;opacity:0.95;margin-bottom:18px;text-shadow:1px 3px 12px rgba(0,0,0,0.35); margin-left: 20px;}
+    .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px rgba(164,198,57,0.12)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff}
+
+    .hero .right{
+      border-radius:var(--radius);overflow:hidden;min-height:360px;position:relative;box-shadow:var(--shadow)
+    }
+
+    /* We use a background color fallback so the page never appears blank */
+    .hero .media{
+      width:100%;height:100%;
+      background-color:#607b3b; /* visible while image loads */
+      background-image:
+        linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22)),
+        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=60');
+      background-size:cover;background-position:center;transition:transform .6s cubic-bezier(.2,.9,.25,1);
+      transform:scale(1.02);
+    }
+    .hero .right:hover .media{transform:scale(1.06)}
+    .stat-cards{position:absolute;left:14px;bottom:14px;display:flex;gap:10px}
+    .stat{background:rgba(255,255,255,0.94);padding:10px 12px;border-radius:10px;font-weight:800;color:var(--accent-2);box-shadow:0 10px 26px rgba(0,0,0,0.06)}
+    .stat{margin-right: 150px ;}
+    @media (max-width:980px){.hero{grid-template-columns:1fr;padding:34px 0}.hero .right{order:-1;margin-bottom:18px}}
+
+    /* ---------- MAIN / SECTION ---------- */
+    main{padding:34px 0}
+    .section{padding:40px 0}
+    .section h2{font-size:26px;margin-bottom:12px;color:var(--accent-2)}
+
+    /* two-column utility */
+    .two-col{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+    @media (max-width:980px){.two-col{grid-template-columns:1fr}}
+
+    /* ---------- MENU GRID ---------- */
+    .card{background:linear-gradient(180deg,var(--panel),#fff);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(0,0,0,0.04);background:transparent;font-weight:700;cursor:pointer}
+    .chip.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none}
+
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+
+    .dish{background:white;border-radius:10px;padding:12px;border:1px solid rgba(0,0,0,0.02);box-shadow:0 10px 26px rgba(20,30,20,0.04);display:flex;flex-direction:column;gap:8px;transition:transform .18s ease,box-shadow .18s ease}
+    .dish:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,30,20,0.08)}
+    .dish .thumb{width:100%;height:130px;border-radius:8px;background-size:cover;background-position:center}
+    .dish .meta{display:flex;justify-content:space-between;align-items:center}
+    .dish .meta h3{font-size:15px;color:var(--accent-2)}
+    .price{font-weight:800;color:var(--accent)}
+
+    /* ---------- GALLERY ---------- */
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .gallery-item{border-radius:10px;overflow:hidden;min-height:110px;background-size:cover;background-position:center;position:relative;cursor:pointer;box-shadow:var(--shadow)}
+    .gallery-item .overlay{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.45));color:white;font-weight:800}
+    @media (max-width:1100px){.gallery-grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:760px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.86);display:none;place-items:center;z-index:240;padding:20px}
+    .lightbox .box{max-width:1100px;width:100%;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 40px 80px rgba(0,0,0,0.6)}
+    .lightbox img{display:block;width:100%;height:auto}
+
+    /* ---------- CONTACT / FORM ---------- */
+    form.reservation{display:flex;flex-direction:column;gap:12px}
+    .form-row{display:flex;gap:12px}
+    .form-row .col{flex:1}
+    input, textarea, select{padding:12px;border-radius:10px;border:1px solid #e7eadf;font-size:14px;outline:none;background:white}
+    textarea{min-height:110px;resize:vertical}
+
+    .note{font-size:13px;color:var(--muted)}
+
+    /* ---------- TESTIMONIALS ---------- */
+    .testimonials{display:flex;gap:12px;overflow:hidden}
+    .testimonial{min-width:220px;background:white;padding:12px;border-radius:10px;box-shadow:var(--shadow)}
+    .testimonial p{font-size:14px;color:#444;margin-bottom:6px}
+
+    /* ---------- FAQ ---------- */
+    .faq .q{background:white;border-radius:10px;padding:12px;border:1px solid rgba(0,0,0,0.03);margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+    .faq .a{padding:12px;border-left:4px solid var(--accent);margin-bottom:10px;background:#fbfdf6;border-radius:8px;display:none}
+
+    /* ---------- FOOTER ---------- */
+    footer.site-footer{margin-top:40px;padding:28px 0;background:#eaeedb;border-top:1px solid rgba(0,0,0,0.02)}
+    .footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+    @media (max-width:900px){.footer-grid{grid-template-columns:1fr}}
+
+    /* ---------- Small helpers & animations ---------- */
+    .muted{color:var(--muted)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+    .fade-up{transform:translateY(6px);opacity:0;transition:all .6s ease}
+    .fade-up.visible{transform:none;opacity:1}
+
+    /* ---------- Extra long block for customization & file length (safe to edit) ---------- */
+    /* This intentionally repeats some utility classes and comments so the single-file is easy to extend. */
+    .extras{margin-top:18px;padding:12px}
+    .extras h4{margin-bottom:8px;color:var(--accent-2)}
+    .extras p{color:var(--muted);font-size:13px;line-height:1.5}
+    .small{font-size:13px}.medium{font-size:15px}.large{font-size:18px}
+    .center{text-align:center}.right{text-align:right}.left{text-align:left}
+    .rounded-sm{border-radius:6px}.rounded{border-radius:12px}.rounded-lg{border-radius:18px}
+    .shadow-sm{box-shadow:0 6px 16px rgba(0,0,0,0.04)}.shadow-md{box-shadow:0 12px 30px rgba(0,0,0,0.06)}.shadow-lg{box-shadow:0 20px 50px rgba(0,0,0,0.08)}
+    /* End extra block */
+  </style>
+</head>
+<body>
+  <!-- PRELOADER -->
+  <div id="preloader" role="status" aria-live="polite">
+    <div class="loader">
+      <div class="spinner" aria-hidden="true"></div>
+      <div>Loading OLIVE…</div>
+      <div style="font-size:13px;color:var(--muted)">Optimizing images for a faster experience</div>
+    </div>
+  </div>
+
+  <!-- SKIP LINK (accessibility) -->
+  <a href="#main" class="sr-only">Skip to main content</a>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner" aria-label="OLIVE header">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">O</div>
+        <div class="title">
+          <div class="name">OLIVE</div>
+          <div class="tag">Fresh Mediterranean Cuisine</div>
+        </div>
+      </div>
+
+      <nav class="primary" role="navigation" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact" class="cta">Reserve</a>
+      </nav>
+
+      <button class="mobile-toggle" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">☰ Menu</button>
+    </div>
+  </header>
+
+  <!-- MAIN PAGE CONTENT -->
+  <main id="main" class="container" role="main">
+
+    <!-- HERO (HOME) -->
+    <section id="home" class="hero" aria-label="Home - OLIVE">
+      <div class="left">
+        <h1>OLIVE</h1>
+        <p class="lead">Where flavor meets freshness — seasonal Mediterranean dishes, crafted with love.</p>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="book-now-btn">Book a Table</button>
+          <a class="btn btn-ghost" href="#menu" role="button">See Menu</a>
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div class="extras small muted">
+          <strong>Opening Hours: Mon–Sun · 11:00 am — 11:00 pm </strong> &nbsp;•&nbsp; <strong>Tel: +91 95978 86828</strong> 
+        </div>
+      </div>
+
+      <div class="right" aria-hidden="false">
+        <!-- media uses an optimized image size so it loads faster -->
+        <div class="media" role="img" aria-label="Delicious mediterranean food"></div>
+
+        <div class="stat-cards">
+          <div class="stat"> <center><big>8 </big>Years</center></div>
+          <div class="stat"><center><big>120+ </big>Recipes</center></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-labelledby="about-title">
+      <h2 id="about-title">About OLIVE</h2>
+
+      <div class="two-col">
+        <div>
+          <p class="muted">OLIVE celebrates seasonal, bright Mediterranean flavors — handmade sauces, fresh breads, locally-sourced produce and sustainable seafood. Our menu reflects coastal inspiration and classic family recipes.</p>
+
+          <div style="height:14px"></div>
+
+          <div class="card">
+            <h3>Meet Chef Maria Rossi</h3>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=60" alt="Chef Maria" style="width:84px;height:84px;border-radius:10px;object-fit:cover">
+              <div>
+                <strong>Chef Maria Rossi</strong>
+                <div class="muted small">Head Chef & Co-owner</div>
+                <p class="muted small" style="margin-top:8px">Inspired by coastal traditions, Chef Maria focuses on clean flavors and seasonal produce.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="extras">
+            <h4>Our Philosophy</h4>
+            <p class="muted">We believe in honest food — simple techniques that highlight the ingredient. Expect wood-fired notes, bright dressings and dishes that feel both familiar and exciting.</p>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h3>Location & Hours</h3>
+            <p class="muted">123 Olive Lane, Food City</p>
+            <p class="muted">Open daily: 11:00 am — 11:00 pm</p>
+            <div style="height:12px"></div>
+            <div style="width:100%;height:160px;background-image:url('https://images.unsplash.com/photo-1548588682-4e7ea5b6f3d8?auto=format&fit=crop&w=800&q=60');background-position:center;background-size:cover;border-radius:10px;box-shadow:var(--shadow)"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="section" aria-labelledby="menu-title">
+      <h2 id="menu-title">Our Menu — Signature & Favorites</h2>
+
+      <div class="card">
+        <div class="filters" role="tablist" aria-label="Menu filters">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="starters">Starters</button>
+          <button class="chip" data-filter="salads">Salads</button>
+          <button class="chip" data-filter="mains">Mains</button>
+          <button class="chip" data-filter="pizzas">Pizzas</button>
+          <button class="chip" data-filter="desserts">Desserts</button>
+          <button class="chip" data-filter="drinks">Drinks</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid" aria-live="polite">
+          <!-- each dish uses a small image (w=400 q=60) and lazy loading where appropriate -->
+          <article class="dish" data-category="starters" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Bruschetta</h3><div class="price">$6.50</div></div>
+            <p>Toasted artisan bread topped with vine tomatoes, basil and extra virgin olive oil.</p>
+          </article>
+
+          <article class="dish" data-category="starters" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1512058564366-c9e3d07b7fbc?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Hummus & Flatbread</h3><div class="price">$7.00</div></div>
+            <p>Creamy chickpea hummus served with warm flatbread and roasted paprika oil.</p>
+          </article>
+
+          <article class="dish" data-category="salads" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1568051243853-2f315c0b8cde?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Greek Salad</h3><div class="price">$8.99</div></div>
+            <p>Tomatoes, cucumbers, feta, Kalamata olives and lemon-olive dressing.</p>
+          </article>
+
+          <article class="dish" data-category="mains" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1543352634-8e0a65d433b9?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Grilled Salmon</h3><div class="price">$18.99</div></div>
+            <p>Atlantic salmon grilled with herbs, lemon zest and olive oil — seasonal greens on the side.</p>
+          </article>
+
+          <article class="dish" data-category="pizzas" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1548365328-99b55d8d1f72?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Margherita Pizza</h3><div class="price">$10.00</div></div>
+            <p>Classic margherita with San Marzano tomato, fresh mozzarella and basil.</p>
+          </article>
+
+          <article class="dish" data-category="desserts" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Baklava</h3><div class="price">$5.50</div></div>
+            <p>Layered filo pastry, nuts and honey syrup — a sweet Mediterranean treat.</p>
+          </article>
+
+          <!-- More realistic menu items that mimic a real professional site -->
+          <article class="dish" data-category="starters" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1562967914-6086f6eae98f?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Dolmades</h3><div class="price">$7.50</div></div>
+            <p>Grape leaves stuffed with rice, herbs and a light lemon sauce.</p>
+          </article>
+
+          <article class="dish" data-category="salads" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Tabbouleh</h3><div class="price">$7.25</div></div>
+            <p>Fresh parsley, bulgur, tomatoes and lemon — bright and light.</p>
+          </article>
+
+          <article class="dish" data-category="mains" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1604908177522-71d6b16b4f1d?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Lamb Kofta</h3><div class="price">$16.50</div></div>
+            <p>Spiced lamb skewers served with yogurt-tahini and fragrant rice.</p>
+          </article>
+
+          <article class="dish" data-category="pizzas" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1601924582971-1c8a3b8a7f42?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Bianca Pizza</h3><div class="price">$11.50</div></div>
+            <p>Ricotta, mozzarella, roasted garlic and oregano on thin crust.</p>
+          </article>
+
+          <article class="dish" data-category="desserts" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Panna Cotta</h3><div class="price">$6.00</div></div>
+            <p>Vanilla panna cotta with seasonal berry coulis.</p>
+          </article>
+
+          <article class="dish" data-category="drinks" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1505765058727-5f6e5a800d76?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Fresh Lemonade</h3><div class="price">$3.95</div></div>
+            <p>Made-to-order lemonade with mint and a hint of honey.</p>
+          </article>
+
+          <!-- Keep the menu plentiful to look realistic -->
+          <article class="dish" data-category="mains" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1589308078059-1f1aebf1ba3f?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Lemon Risotto</h3><div class="price">$13.50</div></div>
+            <p>Creamy risotto with lemon, asparagus and parmesan.</p>
+          </article>
+
+          <article class="dish" data-category="pizzas" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1542444459-dbdfb2e4d1c7?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Funghi Pizza</h3><div class="price">$12.00</div></div>
+            <p>Wild mushrooms, truffle oil drizzle and fresh thyme.</p>
+          </article>
+
+          <article class="dish" data-category="desserts" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1604537466675-6a5f5c1f9a16?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Tiramisu</h3><div class="price">$6.75</div></div>
+            <p>Classic espresso-soaked ladyfingers layered with mascarpone cream.</p>
+          </article>
+
+          <article class="dish" data-category="drinks" tabindex="0">
+            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1586201375761-83865001e7ff?auto=format&fit=crop&w=600&q=60')"></div>
+            <div class="meta"><h3>Iced Tea</h3><div class="price">$3.50</div></div>
+            <p>House-brewed iced tea with lemon and rosemary.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section" aria-labelledby="gallery-title">
+      <h2 id="gallery-title">Photos — A Taste of OLIVE</h2>
+
+      <div class="gallery-grid" id="gallery-grid" role="list">
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Seasonal Platter</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Dining Area</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Bruschetta</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Pasta Primavera</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1606755962773-0c3f3f45c8e8?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1606755962773-0c3f3f45c8e8?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Grilled Salmon</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1625949451927-681c1d6b7a1a?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1625949451927-681c1d6b7a1a?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Margherita Pizza</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1589308078059-1f1aebf1ba3f?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1589308078059-1f1aebf1ba3f?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Risotto</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" role="listitem" data-img="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1300&q=60" style="background-image:url('https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=60')">
+          <div class="overlay">Desserts</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="box" role="document">
+        <button id="lightbox-close" aria-label="Close" style="position:absolute;z-index:260;right:18px;top:10px;padding:10px;border-radius:9px;background:rgba(255,255,255,0.9);border:none;font-weight:700">✕</button>
+        <img id="lightbox-img" src="" alt="Expanded photo">
+      </div>
+    </div>
+
+    <!-- EVENTS -->
+    <section id="events" class="section" aria-labelledby="events-title">
+      <h2 id="events-title">Upcoming Events</h2>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+        <article class="card">
+          <h3>Wine & Tapas Night</h3>
+          <p class="muted small">Fri, Nov 14 · 7:00 PM</p>
+          <p class="muted">An evening of curated vinos and small plates. Tickets include 4 tastings and tapas.</p>
+          <div style="height:10px"></div>
+          <button class="chip" data-event="wine">Book Event</button>
+        </article>
+
+        <article class="card">
+          <h3>Sunday Family Brunch</h3>
+          <p class="muted small">Every Sunday · 10:30 AM — 2:30 PM</p>
+          <p class="muted">Family-friendly brunch with bottomless coffee and kids menu.</p>
+          <div style="height:10px"></div>
+          <button class="chip" data-event="brunch">Reserve Brunch</button>
+        </article>
+
+        <article class="card">
+          <h3>Pasta Masterclass</h3>
+          <p class="muted small">Sat, Dec 6 · 3:00 PM</p>
+          <p class="muted">Hands-on workshop with Chef Maria — make fresh pasta & sauces.</p>
+          <div style="height:10px"></div>
+          <button class="chip" data-event="class">Sign Up</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="section" aria-labelledby="testimonials-title">
+      <h2 id="testimonials-title">What Our Guests Say</h2>
+
+      <div class="testimonials" id="testimonials-list" role="list">
+        <div class="testimonial" role="listitem"><p>"Amazing flavors and warm service — the salmon was perfect."</p><div class="who">— Rohan S.</div></div>
+        <div class="testimonial" role="listitem"><p>"Cozy atmosphere and fresh food. A perfect date-night spot."</p><div class="who">— Priya K.</div></div>
+        <div class="testimonial" role="listitem"><p>"Our family loved the brunch. Great kids menu and friendly staff."</p><div class="who">— Arjun & Family</div></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section" aria-labelledby="faq-title">
+      <h2 id="faq-title">Frequently Asked Questions</h2>
+
+      <div class="faq" id="faq-list">
+        <div class="q" tabindex="0" data-q="q1"><span>Do you take reservations?</span><span>+</span></div>
+        <div class="a" id="a-q1">Yes — we accept reservations online and by phone. Walk-ins are welcome when space is available.</div>
+
+        <div class="q" tabindex="0" data-q="q2"><span>Do you offer vegetarian/vegan options?</span><span>+</span></div>
+        <div class="a" id="a-q2">Absolutely — many of our dishes are vegetarian and we have vegan options. Please inform us about allergies when booking.</div>
+
+        <div class="q" tabindex="0" data-q="q3"><span>Is parking available?</span><span>+</span></div>
+        <div class="a" id="a-q3">Street parking and a nearby public lot are available. We offer limited validated parking for evening guests.</div>
+      </div>
+    </section>
+
+    <!-- CONTACT / RESERVATION -->
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Reserve a Table</h2>
+
+      <div class="two-col">
+        <div>
+          <div class="card">
+            <form id="reservation-form" class="reservation" aria-label="Reservation form">
+              <div class="form-row">
+                <div class="col">
+                  <label class="sr-only" for="name">Name</label>
+                  <input id="name" name="name" type="text" placeholder="Your name" required>
+                </div>
+                <div class="col">
+                  <label class="sr-only" for="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="Email address" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="col">
+                  <label class="sr-only" for="datetime">Date & Time</label>
+                  <input id="datetime" name="datetime" type="datetime-local" required>
+                </div>
+                <div class="col">
+                  <label class="sr-only" for="guests">Guests</label>
+                  <select id="guests" name="guests" required>
+                    <option value="">Guests</option>
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option>
+                  </select>
+                </div>
+              </div>
+
+              <label class="sr-only" for="note">Notes</label>
+              <textarea id="note" name="note" placeholder="Special requests (allergies, seating)"></textarea>
+
+              <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
+                <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+                <div class="note">We will email a confirmation if a valid email is provided.</div>
+              </div>
+            </form>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="extras">
+            <h4>Reservation notes</h4>
+            <p class="muted">Please arrive 10 minutes before your booking. For large parties, contact us directly at +91 95978 86828.</p>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h3>Contact</h3>
+            <p class="muted">Phone: +91 95978 86828</p>
+            <p class="muted">Email: olive17@gmail.com</p>
+            <div style="height:10px"></div>
+            <h3>Location</h3>
+            <p class="muted">123 Olive Lane — Food City</p>
+            <div style="height:10px"></div>
+            <div style="width:100%;height:160px;background-image:url('https://images.unsplash.com/photo-1505765058727-5f6e5a800d76?auto=format&fit=crop&w=800&q=60');background-position:center;background-size:cover;border-radius:10px"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <div>
+        <strong>OLIVE</strong>
+        <div class="muted small">Fresh Mediterranean Cuisine</div>
+        <div style="height:8px"></div>
+        <div class="muted small">© <span id="year"></span> OLIVE Restaurant — All rights reserved</div>
+      </div>
+
+      <div>
+        <h4>Hours</h4>
+        <div class="muted small">Mon–Sun 11:00 am — 11:00 pm</div>
+        <div style="height:8px"></div>
+        <h4>Address</h4>
+        <div class="muted small">123 Olive Lane, Food City</div>
+      </div>
+
+      <div>
+        <h4>Follow</h4>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a aria-label="Instagram" href="#" class="chip">Instagram</a>
+          <a aria-label="Facebook" href="#" class="chip">Facebook</a>
+          <a aria-label="Twitter" href="#" class="chip">Twitter</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX (outside main so it's easy to position) -->
+  <div id="global-aria-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ============================
+       Scripts: all single-file JS
+       ============================ -->
+  <script>
+    /* -------------------------
+       Utility & initial setup
+       ------------------------- */
+    (function(){
+      // set footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // smooth scroll for anchors
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const href = this.getAttribute('href');
+          if(!href || href === '#') return;
+          const target = document.querySelector(href);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth',block:'start'});
+          }
+        });
+      });
+
+      // mobile toggle (simple overlay)
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      if(mobileToggle){
+        mobileToggle.addEventListener('click', function(){
+          const expanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !expanded);
+          let mobileMenu = document.getElementById('mobile-menu');
+          if(!mobileMenu){
+            mobileMenu = document.createElement('div');
+            mobileMenu.id = 'mobile-menu';
+            mobileMenu.style.position = 'fixed';
+            mobileMenu.style.inset = '60px 18px 18px 18px';
+            mobileMenu.style.background = 'white';
+            mobileMenu.style.borderRadius = '12px';
+            mobileMenu.style.padding = '18px';
+            mobileMenu.style.boxShadow = '0 30px 80px rgba(0,0,0,0.15)';
+            mobileMenu.innerHTML = '<nav style="display:flex;flex-direction:column;gap:10px"><a href=\"#home\">Home</a><a href=\"#about\">About</a><a href=\"#menu\">Menu</a><a href=\"#gallery\">Gallery</a><a href=\"#contact\">Reserve</a></nav>';
+            document.body.appendChild(mobileMenu);
+          } else {
+            mobileMenu.style.display = this.getAttribute('aria-expanded') === 'true' ? 'block' : 'none';
+          }
+        });
+      }
+
+      // reveal-on-scroll using IntersectionObserver
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, {threshold:0.12});
+      document.querySelectorAll('.fade-up, .dish, .card, .testimonial, .gallery-item, .stat').forEach(el=> io.observe(el));
+    })();
+
+    /* -------------------------
+       PRELOADER: hide when page fully loaded
+       ------------------------- */
+    (function(){
+      function hidePreloader(){
+        const pre = document.getElementById('preloader');
+        if(pre){
+          pre.classList.add('hidden');
+          // ensure we remove the preloader element after fade for cleaner DOM
+          setTimeout(()=>pre.remove && pre.remove(), 600);
+        }
+      }
+
+      // hide preloader on full load
+      window.addEventListener('load', function(){
+        // small delay to ensure images have time to render their low-res placeholder
+        setTimeout(hidePreloader, 240);
+      });
+
+      // also hide preloader if load takes too long (fail-safe)
+      setTimeout(hidePreloader, 4000);
+    })();
+
+    /* -------------------------
+       MENU FILTERS
+       ------------------------- */
+    (function(){
+      const chips = document.querySelectorAll('.chip[data-filter]');
+      const dishes = document.querySelectorAll('.dish');
+
+      function setFilter(filter){
+        chips.forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+        dishes.forEach(d => {
+          if(filter === 'all' || d.dataset.category === filter){
+            d.style.display = 'flex';
+            // set small timeout to trigger reveal animation if hidden before
+            setTimeout(()=>d.classList.add('visible'), 30);
+          } else {
+            d.style.display = 'none';
+          }
+        });
+      }
+
+      chips.forEach(chip => chip.addEventListener('click', function(){ setFilter(this.dataset.filter); }));
+      setFilter('all');
+    })();
+
+    /* -------------------------
+       GALLERY LIGHTBOX
+       ------------------------- */
+    (function(){
+      const gallery = document.getElementById('gallery-grid');
+      const lightbox = document.createElement('div');
+      lightbox.className = 'lightbox';
+      lightbox.id = 'lightbox';
+      lightbox.innerHTML = '<div class="box"><button id="lightbox-close" aria-label="Close" style="position:absolute;z-index:260;right:18px;top:10px;padding:10px;border-radius:9px;background:rgba(255,255,255,0.9);border:none;font-weight:700">✕</button><img id="lightbox-img" src="" alt="Expanded photo"></div>';
+      document.body.appendChild(lightbox);
+
+      const box = lightbox.querySelector('.box');
+      const imgEl = document.getElementById('lightbox-img');
+      const closeBtn = document.getElementById('lightbox-close');
+
+      function open(src, alt){
+        imgEl.src = src;
+        imgEl.alt = alt || 'OLIVE photo';
+        lightbox.style.display = 'grid';
+        closeBtn.focus();
+      }
+      function close(){
+        lightbox.style.display = 'none';
+        imgEl.src = '';
+      }
+
+      document.querySelectorAll('.gallery-item').forEach(item=>{
+        item.addEventListener('click', ()=> open(item.dataset.img, item.querySelector('.overlay').textContent));
+        item.addEventListener('keypress', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(item.dataset.img, item.querySelector('.overlay').textContent); }});
+      });
+
+      closeBtn.addEventListener('click', close);
+      lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) close(); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+    })();
+
+    /* -------------------------
+       FAQ accordion
+       ------------------------- */
+    (function(){
+      document.querySelectorAll('#faq-list .q').forEach(q=>{
+        function toggle(){
+          const id = q.dataset.q;
+          const panel = document.getElementById('a-'+id);
+          const expanded = panel.style.display === 'block';
+          panel.style.display = expanded ? 'none' : 'block';
+          // switch symbol (last span)
+          const chars = q.querySelectorAll('span');
+          if(chars && chars[1]) chars[1].textContent = expanded ? '+' : '−';
+        }
+        q.addEventListener('click', toggle);
+        q.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') toggle(); });
+      });
+    })();
+
+    /* -------------------------
+       Reservation: validation + localStorage + small UX
+       ------------------------- */
+    (function(){
+      const form = document.getElementById('reservation-form');
+      if(!form) return;
+      const storageKey = 'olive_res_last';
+
+      // load last saved name/email (for convenience)
+      try{
+        const last = JSON.parse(localStorage.getItem(storageKey));
+        if(last){
+          if(last.name) document.getElementById('name').value = last.name;
+          if(last.email) document.getElementById('email').value = last.email;
+        }
+      }catch(e){ /* ignore */ }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const datetime = form.datetime.value;
+        const guests = form.guests.value;
+        const note = form.note.value.trim();
+
+        if(!name || !email || !datetime || !guests){
+          alert('Please complete all required fields.');
+          return;
+        }
+        if(!/^\S+@\S+\.\S+$/.test(email)){
+          alert('Please enter a valid email.');
+          return;
+        }
+        const chosen = new Date(datetime);
+        if(chosen.toString() === 'Invalid Date'){
+          alert('Please select a valid date and time.');
+          return;
+        }
+        const now = new Date();
+        if(chosen < now){
+          if(!confirm('Selected date/time is in the past. Continue?')) return;
+        }
+
+        // save last used values for convenience
+        try{ localStorage.setItem(storageKey, JSON.stringify({name,email})); }catch(e){/* ignore */ }
+
+        // "simulate" reservation
+        setTimeout(()=>{
+          alert(`Thank you ${name}! Your reservation for ${guests} on ${new Date(datetime).toLocaleString()} has been recorded. A confirmation will be sent to ${email}.`);
+          form.reset();
+        }, 420);
+      });
+    })();
+
+    /* -------------------------
+       Testimonials rotation (simple)
+       ------------------------- */
+    (function(){
+      const list = document.getElementById('testimonials-list');
+      if(!list) return;
+      const items = Array.from(list.children);
+      if(!items.length) return;
+      let idx = 0;
+      function rotate(){
+        items.forEach((it,i)=> it.style.opacity = i === idx ? '1' : '0.25');
+        idx = (idx + 1) % items.length;
+      }
+      rotate();
+      setInterval(rotate, 4800);
+    })();
+
+    /* -------------------------
+       Small accessibility helpers and extras
+       ------------------------- */
+    (function(){
+      // Book now button focuses reservation name input
+      const bookBtn = document.getElementById('book-now-btn');
+      if(bookBtn){
+        bookBtn.addEventListener('click', function(){
+          document.querySelector('#contact').scrollIntoView({behavior:'smooth'});
+          setTimeout(()=> document.getElementById('name').focus(), 500);
+        });
+      }
+
+      // Escape to close mobile menu if visible
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape'){
+          const mobileMenu = document.getElementById('mobile-menu');
+          if(mobileMenu) mobileMenu.style.display = 'none';
+        }
+      });
+    })();
+
+    /* -------------------------
+       Extra small utilities exposed (safe to use in console)
+       ------------------------- */
+    (function utils(){
+      window.oliveUtils = {
+        formatCurrency: function(n){ if(typeof n !== 'number') n = parseFloat(n) || 0; return '$' + n.toFixed(2); },
+        randomFrom: function(arr){ if(!Array.isArray(arr)) return null; return arr[Math.floor(Math.random()*arr.length)]; },
+        throttle: function(fn, wait){ let last = 0; return function(...args){ const now = Date.now(); if(now - last >= wait){ last = now; fn.apply(this,args); } } }
+      };
+      console.log('OLIVE utils loaded');
+    })();
+  </script>
+</body>
+</html>
